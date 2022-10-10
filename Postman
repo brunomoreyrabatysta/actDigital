@@ -1,0 +1,566 @@
+{
+	"info": {
+		"_postman_id": "36958063-3cae-4650-a162-8d6695597182",
+		"name": "APIMsFinanceiro",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "9348555"
+	},
+	"item": [
+		{
+			"name": "01 - Login - Autenticação",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"clientid\": \"actDigital\",\r\n    \"clientsecret\": \"20actDigital22!!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5166/v1/accounts/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5166",
+					"path": [
+						"v1",
+						"accounts",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02 - Tipo Lançamento - Get",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWN0RGlnaXRhbCIsInJvbGUiOiJhZG1pbiIsIm5iZiI6MTY2NTQwODUxOSwiZXhwIjoxNjY1NDA5NDE5LCJpYXQiOjE2NjU0MDg1MTl9.K1JxJtDB8b8V5-6PZ8_PJuK5YgBPC4H3-y0wPB7K05w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5166/v1/tipos-lancamento?page=0&pageSize=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5166",
+					"path": [
+						"v1",
+						"tipos-lancamento"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "0"
+						},
+						{
+							"key": "pageSize",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02 - Tipo Lançamento - GetById",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWN0RGlnaXRhbCIsInJvbGUiOiJhZG1pbiIsIm5iZiI6MTY2NTMxOTQ1OSwiZXhwIjoxNjY1MzIwMzU5LCJpYXQiOjE2NjUzMTk0NTl9.YWAi4fxpHKjy3rKMsdrVyiUaN2ZVmlEWyvrJ3KH8nkE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5166/v1/tipos-lancamento/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5166",
+					"path": [
+						"v1",
+						"tipos-lancamento",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02 - Tipo Lançamento - Post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWN0RGlnaXRhbCIsInJvbGUiOiJhZG1pbiIsIm5iZiI6MTY2NTMyMTQyMSwiZXhwIjoxNjY1MzIyMzIxLCJpYXQiOjE2NjUzMjE0MjF9.ey4F0W5--uAzdx1NusFHgweeJddWvcsREAWurIh4SnY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n    \"descricao\": \"11111111\",\r\n    \"tipo\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5166/v1/tipos-lancamento/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5166",
+					"path": [
+						"v1",
+						"tipos-lancamento",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02 - Tipo Lançamento - Put",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWN0RGlnaXRhbCIsInJvbGUiOiJhZG1pbiIsIm5iZiI6MTY2NTMxOTQ1OSwiZXhwIjoxNjY1MzIwMzU5LCJpYXQiOjE2NjUzMTk0NTl9.YWAi4fxpHKjy3rKMsdrVyiUaN2ZVmlEWyvrJ3KH8nkE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"descricao\": \"Débito\",\r\n    \"tipo\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5166/v1/tipos-lancamento/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5166",
+					"path": [
+						"v1",
+						"tipos-lancamento",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "02 - Tipo Lançamento - Delete",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWN0RGlnaXRhbCIsInJvbGUiOiJhZG1pbiIsIm5iZiI6MTY2NTQwODUxOSwiZXhwIjoxNjY1NDA5NDE5LCJpYXQiOjE2NjU0MDg1MTl9.K1JxJtDB8b8V5-6PZ8_PJuK5YgBPC4H3-y0wPB7K05w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5166/v1/tipos-lancamento/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5166",
+					"path": [
+						"v1",
+						"tipos-lancamento",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "03 - Cliente - Get",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWN0RGlnaXRhbCIsInJvbGUiOiJhZG1pbiIsIm5iZiI6MTY2NTQwODUxOSwiZXhwIjoxNjY1NDA5NDE5LCJpYXQiOjE2NjU0MDg1MTl9.K1JxJtDB8b8V5-6PZ8_PJuK5YgBPC4H3-y0wPB7K05w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5166/v1/clientes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5166",
+					"path": [
+						"v1",
+						"clientes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "03 - Cliente - GetById",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWN0RGlnaXRhbCIsInJvbGUiOiJhZG1pbiIsIm5iZiI6MTY2NTQwODUxOSwiZXhwIjoxNjY1NDA5NDE5LCJpYXQiOjE2NjU0MDg1MTl9.K1JxJtDB8b8V5-6PZ8_PJuK5YgBPC4H3-y0wPB7K05w",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5166/v1/clientes/0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5166",
+					"path": [
+						"v1",
+						"clientes",
+						"0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "03 - Cliente - Post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWN0RGlnaXRhbCIsInJvbGUiOiJhZG1pbiIsIm5iZiI6MTY2NTQwOTEyOCwiZXhwIjoxNjY1NDEwMDI4LCJpYXQiOjE2NjU0MDkxMjh9.dJmJ2FAxDVOxuv9kQXaejpcXDxbLTV6iM6f_L3o5jSc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n    \"nome\": \"Teste do nome 3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5166/v1/clientes/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5166",
+					"path": [
+						"v1",
+						"clientes",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "03 - Cliente - Put",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWN0RGlnaXRhbCIsInJvbGUiOiJhZG1pbiIsIm5iZiI6MTY2NTQwOTEyOCwiZXhwIjoxNjY1NDEwMDI4LCJpYXQiOjE2NjU0MDkxMjh9.dJmJ2FAxDVOxuv9kQXaejpcXDxbLTV6iM6f_L3o5jSc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n    \"nome\": \"Teste do nome 666\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5166/v1/clientes/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5166",
+					"path": [
+						"v1",
+						"clientes",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "03 - Cliente - Delete",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWN0RGlnaXRhbCIsInJvbGUiOiJhZG1pbiIsIm5iZiI6MTY2NTQwOTEyOCwiZXhwIjoxNjY1NDEwMDI4LCJpYXQiOjE2NjU0MDkxMjh9.dJmJ2FAxDVOxuv9kQXaejpcXDxbLTV6iM6f_L3o5jSc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5166/v1/clientes/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5166",
+					"path": [
+						"v1",
+						"clientes",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04 - Lancamento - Get",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWN0RGlnaXRhbCIsInJvbGUiOiJhZG1pbiIsIm5iZiI6MTY2NTQxMzEzNCwiZXhwIjoxNjY1NDE0MDM0LCJpYXQiOjE2NjU0MTMxMzR9.VDJdFdXuI6cS_cm11Q6qkgcnUW3TDKzXgJBJJ9svGVo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5166/v1/lancamentos",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5166",
+					"path": [
+						"v1",
+						"lancamentos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04 - Lancamento - GetById",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWN0RGlnaXRhbCIsInJvbGUiOiJhZG1pbiIsIm5iZiI6MTY2NTQxMzEzNCwiZXhwIjoxNjY1NDE0MDM0LCJpYXQiOjE2NjU0MTMxMzR9.VDJdFdXuI6cS_cm11Q6qkgcnUW3TDKzXgJBJJ9svGVo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5166/v1/lancamentos/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5166",
+					"path": [
+						"v1",
+						"lancamentos",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04 - Lancamento - Post",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWN0RGlnaXRhbCIsInJvbGUiOiJhZG1pbiIsIm5iZiI6MTY2NTQxMzEzNCwiZXhwIjoxNjY1NDE0MDM0LCJpYXQiOjE2NjU0MTMxMzR9.VDJdFdXuI6cS_cm11Q6qkgcnUW3TDKzXgJBJJ9svGVo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n    \"descricao\": \"Venda realizada, recebida\",\r\n    \"data\": \"2022-10-25\",\r\n    \"valor\": 100.55,\r\n    \"tipoLancamentoId\": 1,\r\n    \"clienteId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5166/v1/lancamentos/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5166",
+					"path": [
+						"v1",
+						"lancamentos",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04 - Lancamento - Put",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWN0RGlnaXRhbCIsInJvbGUiOiJhZG1pbiIsIm5iZiI6MTY2NTQxMzc2MSwiZXhwIjoxNjY1NDE0NjYxLCJpYXQiOjE2NjU0MTM3NjF9.NdQmtCClh5Tt9Dkp9FnujpdQRkkFRCw9dYKMWHkxu34",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \r\n    \"descricao\": \"Venda realizada, recebida\",\r\n    \"data\": \"2022-10-25\",\r\n    \"valor\": 100.55,\r\n    \"tipoLancamentoId\": 2,\r\n    \"clienteId\": 1\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:5166/v1/lancamentos/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5166",
+					"path": [
+						"v1",
+						"lancamentos",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "04 - Lancamento - Delete",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWN0RGlnaXRhbCIsInJvbGUiOiJhZG1pbiIsIm5iZiI6MTY2NTQwOTEyOCwiZXhwIjoxNjY1NDEwMDI4LCJpYXQiOjE2NjU0MDkxMjh9.dJmJ2FAxDVOxuv9kQXaejpcXDxbLTV6iM6f_L3o5jSc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5166/v1/lancamentos/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5166",
+					"path": [
+						"v1",
+						"lancamentos",
+						"3"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
