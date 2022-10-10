@@ -131,6 +131,7 @@ public class LancamentoController : ControllerBase
         [FromRoute] int id,
         [FromServices] APIMsFinanceiroDataContext context)
     {
+
         try
         {
             var lancamento = _repository.Delete(id);
