@@ -1,10 +1,10 @@
 ﻿using APIMsFinanceiro.API.Enums;
+using APIMsFinanceiro.API.Shared;
 
 namespace APIMsFinanceiro.API.Models.Entities
 {
-    public class TipoLancamento
+    public class TipoLancamento : Entity
     {
-        public int Id { get; set; }
         public string Descricao { get; set; }
         public ETipoLancamento Tipo { get; set; }
 

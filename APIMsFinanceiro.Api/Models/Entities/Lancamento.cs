@@ -1,8 +1,9 @@
-﻿namespace APIMsFinanceiro.API.Models.Entities;
+﻿using APIMsFinanceiro.API.Shared;
 
-public class Lancamento
-{
-    public int Id { get; set; }
+namespace APIMsFinanceiro.API.Models.Entities;
+
+public class Lancamento : Entity
+{    
     public string Descricao { get; set; }
     public DateTime Data { get; set; }
     public double Valor { get; set; }
