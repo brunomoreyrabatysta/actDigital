@@ -28,55 +28,24 @@ public class TipoLancamentoController : ControllerBase
 
     [HttpGet("v1/tipos-lancamento")]
     public async Task<IActionResult> Get(
-        [FromQuery]int page = 0,
-        [FromQuery]int pageSize = 25)
+        [FromQuery] int page = 0,
+        [FromQuery] int pageSize = 25)
     {
-        try
-        {
-            var count = _repository.Count();
+        var tiposLancamentoRS = _repository.Get(page, pageSize);
 
-            var tiposLancamento = _repository.Get(page,pageSize);
-
-            return Ok(new ResultViewModel<dynamic>(new
-            {
-                totalRegistros = count,
-                totalPaginas = Math.Round(count / (decimal)pageSize),
-                pagina = page,
-                tamnhoPagina = pageSize,
-                tiposLancamento
-            }));
-        }
-        catch (DbUpdateException)
-        {
-            return StatusCode(500, new ResultViewModel<List<TipoLancamento>>(error: "ERTP007 - Não foi possível buscar o(s) tipo(s) de lançamento!"));
-        }
-        catch
-        {
-            return StatusCode(500, new ResultViewModel<List<TipoLancamento>>(error: "ERTP008 - Falha interna no servidor!"));
-        }
+        return Ok(tiposLancamentoRS);
     }
 
     [HttpGet("v1/tipos-lancamento/{id:int}")]
     public async Task<IActionResult> GetById(
         [FromRoute] int id)
     {
-        try
-        {
-            var tipoLancamento = _repository.GetBydId(id);
+        var tipoLancamentoRS = _repository.GetBydId(id);
 
-            if (tipoLancamento == null)
-                return NotFound(new ResultViewModel<TipoLancamento>(error: "ERTP011 - Não foi encontrado o tipo de lançamento!"));
+        if (!tipoLancamentoRS.Sucess)
+            return StatusCode(500, tipoLancamentoRS);
 
-            return Ok(new ResultViewModel<TipoLancamento>(tipoLancamento));
-        }
-        catch (DbUpdateException)
-        {
-            return StatusCode(500, new ResultViewModel<TipoLancamento>(error: "ERTP009 - Não foi possível buscar o tipo de lançamento!"));
-        }
-        catch
-        {
-            return StatusCode(500, new ResultViewModel<TipoLancamento>(error: "ERTP010 - Falha interna no servidor!"));
-        }
+        return Ok(tipoLancamentoRS);
     }
 
     [HttpPost("v1/tipos-lancamento")]
@@ -85,21 +54,18 @@ public class TipoLancamentoController : ControllerBase
     {
         if (!ModelState.IsValid)
             return BadRequest(new ResultViewModel<TipoLancamento>(ModelState.GetErros()));
-        
-        try
-        {
-            var tipoLancamento = _repository.Add(tipoLancamentoVM);            
 
-            return Created($"v1/tipos-lancamento/{tipoLancamento.Id}", new ResultViewModel<TipoLancamento>(tipoLancamento));
-        }
-        catch (DbUpdateException)
+        var tipoLancamentoRS = _repository.Add(tipoLancamentoVM);
+
+        if (tipoLancamentoRS.Sucess)
         {
-            return StatusCode(500, new ResultViewModel<TipoLancamento>(error: "ERTP001 - Não foi possível incluir o tipo de lançamento!"));
+            var tipoLancamento = tipoLancamentoRS.Data;
+
+            return Created($"v1/tipos-lancamento/{tipoLancamento.Id}", tipoLancamentoRS);
         }
-        catch
-        {
-            return StatusCode(500, new ResultViewModel<TipoLancamento>(error: "ERTP002 - Falha interna no servidor!"));
-        }
+        else
+            return StatusCode(500, tipoLancamentoRS);
+
     }
 
     [HttpPut("v1/tipos-lancamento/{id:int}")]
@@ -107,47 +73,23 @@ public class TipoLancamentoController : ControllerBase
         [FromRoute] int id,
         [FromBody] TipoLancamentoViewModel tipoLancamentoVM)
     {
-        try
-        {
-            var tipoLancamento = _repository.Update(id, tipoLancamentoVM);
+        var tipoLancamentoRS = _repository.Update(id, tipoLancamentoVM);
 
-            if (tipoLancamento == null)
-                return NotFound(new ResultViewModel<Cliente>(error: "ERTP008 - Não foi encontrado o tipo de lançamento!"));
+        if (!tipoLancamentoRS.Sucess)
+            return StatusCode(500, tipoLancamentoRS);
 
-            return Ok(new ResultViewModel<TipoLancamento>(tipoLancamento));
-        }
-        catch (DbUpdateException)
-        {
-            return StatusCode(500, new ResultViewModel<TipoLancamento>(error: "ERTP003 - Não foi possível alterar  o tipo de lançamento!"));
-        }
-
-        catch
-        {
-            return StatusCode(500, new ResultViewModel<TipoLancamento>(error: "ERTP004 - Falha interna no servidor!"));
-        }
+        return Ok(tipoLancamentoRS);
     }
 
     [HttpDelete("v1/tipos-lancamento/{id:int}")]
-    public async Task<IActionResult> Deletes(
+    public async Task<IActionResult> Delete(
         [FromRoute] int id)
     {
-        try
-        {
-            var tipoLancamento = _repository.Delete(id);
+        var tipoLancamentoRS = _repository.Delete(id);
 
-            if (tipoLancamento == null)
-                return NotFound(new ResultViewModel<TipoLancamento>(error: "ERTP013 - Não foi encontrado o tipo de lançamento!"));
+        if (!tipoLancamentoRS.Sucess)
+            return StatusCode(500, tipoLancamentoRS);
 
-            return Ok(new ResultViewModel<TipoLancamento>(tipoLancamento));
-        }
-        catch (DbUpdateException)
-        {
-            return StatusCode(500, new ResultViewModel<TipoLancamento>(error: "ERTP005 - Não foi possível excluir  o tipo de lançamento!"));
-        }
-
-        catch
-        {
-            return StatusCode(500, new ResultViewModel<TipoLancamento>(error: "ERTP006 - Falha interna no servidor!"));
-        }
+        return Ok(tipoLancamentoRS);
     }
 }

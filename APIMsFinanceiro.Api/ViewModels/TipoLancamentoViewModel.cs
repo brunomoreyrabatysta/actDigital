@@ -4,6 +4,7 @@ namespace APIMsFinanceiro.ViewModels
 {
     public class TipoLancamentoViewModel
     {
+        public int Id { get; set; }
         [Required(ErrorMessage ="A descrição é obrigatória!")]
         [StringLength(40,MinimumLength =3, ErrorMessage = "A descrição deve conter entre 3 e 40 caracteres!")]
         [Display(Name = "A descrição do tipo de lançamento!")]

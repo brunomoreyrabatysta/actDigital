@@ -4,6 +4,8 @@ using APIMsFinanceiro.API.Models.Repositories;
 using APIMsFinanceiro.Data;
 using APIMsFinanceiro.ViewModels;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 
 namespace APIMsFinanceiro.API.Infra.Repositories;
 
@@ -16,8 +18,66 @@ public class TipoLancamentoRepository : ITipoLancamentoRepository
         _context = context;
     }
 
-    public TipoLancamento Add(TipoLancamentoViewModel tipoLancamentoVM)
+    private List<string> Validar(TipoLancamentoViewModel tipoLancamentoVM)
     {
+        return Validar(tipoLancamentoVM, true);
+    }
+
+    private List<string> Validar(TipoLancamentoViewModel tipoLancamentoVM, bool isAdd)
+    {
+        List<string> errors = new List<string>();
+
+        if (!isAdd)
+        {
+            if (tipoLancamentoVM.Id == 0)
+                errors.Add("ERTP010 - O código do tipo do lançamento não foi preenchido!");
+            else
+            {
+                var tipoLancamentoPQ = _context.TiposLancamento.FirstOrDefault(tp => tp.Id == tipoLancamentoVM.Id);
+                if (tipoLancamentoPQ == null)
+                    errors.Add("ERTP011 - O código do tipo do lançamento não existe cadastrado!");
+            }
+        }
+
+        if (string.IsNullOrEmpty(tipoLancamentoVM.Descricao))
+            errors.Add("ERTP007 - A descrição do tipo de lançamento não foi preenchida!");
+        else if (tipoLancamentoVM.Descricao.Length < 3 || tipoLancamentoVM.Descricao.Length > 40)
+            errors.Add("ERTP009 - A descrição está com um tamanho fora do permitido!");
+
+        if (tipoLancamentoVM.Tipo == 0)
+            errors.Add("ERTP010 - O tipo do lancaçmento não foi preenchido!");
+        else if (tipoLancamentoVM.Tipo != (int)ETipoLancamento.Credito &&
+                tipoLancamentoVM.Tipo != (int)ETipoLancamento.Debito &&
+                tipoLancamentoVM.Tipo != (int)ETipoLancamento.Nulo)
+            errors.Add("ERTP011 - O tipo do lancaçmento preenchido é inválido!");
+
+        return errors;
+    }
+
+    private List<string> ValidarExclusao(TipoLancamentoViewModel tipoLancamentoVM)
+    {
+        List<string> errors = new List<string>();
+
+
+        if (tipoLancamentoVM.Id == 0)
+            errors.Add("ERTP010 - O código do tipo do lançamento não foi preenchido!");
+        else
+        {
+            var tipoLancamentoPQ = _context.TiposLancamento.FirstOrDefault(tp => tp.Id == tipoLancamentoVM.Id);
+            if (tipoLancamentoPQ == null)
+                errors.Add("ERTP011 - O código do tipo do lançamento não existe cadastrado!");
+        }
+
+        return errors;
+    }
+
+    public ResultViewModel<TipoLancamento> Add(TipoLancamentoViewModel tipoLancamentoVM)
+    {
+        List<string> errors = Validar(tipoLancamentoVM);
+
+        if (errors.Count > 0)
+            return new ResultViewModel<TipoLancamento>(errors);
+
         var tipoLancamento = new TipoLancamento
         {
             Id = 0,
@@ -25,61 +85,145 @@ public class TipoLancamentoRepository : ITipoLancamentoRepository
             Tipo = (ETipoLancamento)tipoLancamentoVM.Tipo
         };
 
-        _context.TiposLancamento.Add(tipoLancamento);
-        _context.SaveChanges();
+        try
+        {
+            _context.TiposLancamento.Add(tipoLancamento);
+            _context.SaveChanges();
 
-        return tipoLancamento;
+            return new ResultViewModel<TipoLancamento>(tipoLancamento);
+        }
+        catch (DbUpdateException)
+        {
+            return new ResultViewModel<TipoLancamento>(error: "ERTP001 - Não foi possível incluir o tipo de lançamento!");
+        }
+        catch
+        {
+            return new ResultViewModel<TipoLancamento>(error: "ERTP002 - Falha interna no servidor!");
+        }
     }
 
-    public TipoLancamento Delete(int id)
+    public ResultViewModel<TipoLancamento> Delete(int id)
     {
-        var tipoLancamento = _context.TiposLancamento.FirstOrDefault(tl => tl.Id == id);
+        var tipoLancamentoVM = new TipoLancamentoViewModel { Id = id };
 
-        if (tipoLancamento != null)
+        var errors = ValidarExclusao(tipoLancamentoVM);
+
+        if (errors.Count > 0)
+            return new ResultViewModel<TipoLancamento>(errors);
+
+        try
         {
+            var tipoLancamento = _context.TiposLancamento.FirstOrDefault(tl => tl.Id == tipoLancamentoVM.Id);
+
             _context.TiposLancamento.Remove(tipoLancamento);
             _context.SaveChangesAsync();
-            return tipoLancamento;
+
+            return new ResultViewModel<TipoLancamento>(tipoLancamento);
+        }
+        catch (DbUpdateException)
+        {
+            return  new ResultViewModel<TipoLancamento>(error: "ERTP005 - Não foi possível excluir  o tipo de lançamento!");
         }
 
-        return null;
+        catch
+        {
+            return new ResultViewModel<TipoLancamento>(error: "ERTP006 - Falha interna no servidor!");
+        }
+
     }
 
-    public List<TipoLancamento> Get(int page,
+    public ResultViewModel<dynamic> Get(int page,
                                     int pageSize)
     {
-        var tiposLancamento = _context.TiposLancamento.Skip(page * pageSize).Take(pageSize).ToList();
+        try
+        {
+            var count = Count();
 
-        return tiposLancamento;
+            var tiposLancamento = _context.TiposLancamento.Skip(page * pageSize).Take(pageSize).ToList();
+            
+            return new ResultViewModel<dynamic>(new
+            {
+                totalRegistros = count,
+                totalPaginas = Math.Round(count / (decimal)pageSize),
+                pagina = page,
+                tamnhoPagina = pageSize,
+                tiposLancamento
+            });
+        }
+        catch (DbUpdateException)
+        {
+            return  new ResultViewModel<dynamic>(error: "ERTP007 - Não foi possível buscar o(s) tipo(s) de lançamento!");
+        }
+        catch
+        {
+            return new ResultViewModel<dynamic>(error: "ERTP008 - Falha interna no servidor!");
+        }
+
     }
 
-    public TipoLancamento GetBydId(int id)
+    public ResultViewModel<TipoLancamento> GetBydId(int id)
     {
-        var tipoLancamento = _context.TiposLancamento.FirstOrDefault(tl => tl.Id == id);
+        try
+        {
+            var tipoLancamento = _context.TiposLancamento.FirstOrDefault(tl => tl.Id == id);
 
-        return tipoLancamento;
+            if (tipoLancamento == null)
+                return new ResultViewModel<TipoLancamento>(error: "ERTP011 - Não foi encontrado o tipo de lançamento!");
+
+            return new ResultViewModel<TipoLancamento>(tipoLancamento);
+        }
+        catch (DbUpdateException)
+        {
+            return new ResultViewModel<TipoLancamento>(error: "ERTP009 - Não foi possível buscar o tipo de lançamento!");
+        }
+        catch
+        {
+            return new ResultViewModel<TipoLancamento>(error: "ERTP010 - Falha interna no servidor!");
+        }
     }
 
-    public TipoLancamento Update(int id,
+    public ResultViewModel<TipoLancamento> Update(int id,
                         TipoLancamentoViewModel tipoLancamentoVM)
     {
-        var tipoLancamento = GetBydId(id);
+        tipoLancamentoVM.Id = id;
 
-        if (tipoLancamento == null)
-            return null;
+        var errors = Validar(tipoLancamentoVM, false);
 
-        tipoLancamento.Descricao = tipoLancamentoVM.Descricao;
-        tipoLancamento.Tipo = (ETipoLancamento)tipoLancamentoVM.Tipo;
+        if (errors.Count > 0)
+            return new ResultViewModel<TipoLancamento>(errors);
 
+        TipoLancamento tipoLancamento = new TipoLancamento();
 
-        _context.TiposLancamento.Update(tipoLancamento);
-        _context.SaveChangesAsync();
+        try
+        {
+            tipoLancamento.Descricao = tipoLancamentoVM.Descricao;
+            tipoLancamento.Tipo = (ETipoLancamento)tipoLancamentoVM.Tipo;
 
-        return tipoLancamento;
+            _context.TiposLancamento.Update(tipoLancamento);
+            _context.SaveChangesAsync();
+
+            return new ResultViewModel<TipoLancamento>(tipoLancamento);
+        }
+        catch (DbUpdateException)
+        {
+            return new ResultViewModel<TipoLancamento>(error: "ERTP003 - Não foi possível alterar  o tipo de lançamento!");
+        }
+
+        catch
+        {
+            return new ResultViewModel<TipoLancamento>(error: "ERTP004 - Falha interna no servidor!");
+        }
     }
 
     public int Count()
     {
-        return _context.TiposLancamento.Count();
+        try
+        {
+            return _context.TiposLancamento.Count();
+        }
+        catch (Exception)
+        {
+            return 0;
+        }
     }
 }
