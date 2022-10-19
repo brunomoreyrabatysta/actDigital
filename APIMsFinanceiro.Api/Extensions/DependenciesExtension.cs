@@ -3,6 +3,7 @@ using APIMsFinanceiro.API.Models.Repositories;
 using APIMsFinanceiro.Data;
 using APIMsFinanceiro.Services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace APIMsFinanceiro.API.Extensions
 {
@@ -17,14 +18,14 @@ namespace APIMsFinanceiro.API.Extensions
 
         public static void AddRepositories(this IServiceCollection services)
         {
-            services.AddScoped<ITipoLancamentoRepository, TipoLancamentoRepository>();
-            services.AddScoped<IClienteRepository, ClienteRepository>();
-            services.AddScoped<ILancamentoRepository, LancamentoRepository>();
+            services.TryAddScoped<ITipoLancamentoRepository, TipoLancamentoRepository>();
+            services.TryAddScoped<IClienteRepository, ClienteRepository>();
+            services.TryAddScoped<ILancamentoRepository, LancamentoRepository>();
         }
 
         public static void AddServices(this IServiceCollection services)
         {
-            services.AddTransient<TokenService>();
+            services.TryAddTransient<TokenService>();
         }
     }
 }
