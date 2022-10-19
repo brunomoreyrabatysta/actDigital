@@ -10,6 +10,7 @@ using System.IO.Compression;
 using Microsoft.EntityFrameworkCore;
 using APIMsFinanceiro.API.Models.Repositories;
 using APIMsFinanceiro.API.Infra.Repositories;
+using APIMsFinanceiro.API.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -103,9 +104,7 @@ void ConfigureService(WebApplicationBuilder _builder)
 {
     var connectionString = _builder.Configuration.GetConnectionString("DefaultConnection");
 
-    _builder.Services.AddDbContext<APIMsFinanceiroDataContext>(options => options.UseSqlServer(connectionString));
-    _builder.Services.AddTransient<TokenService>();
-    _builder.Services.AddScoped<ITipoLancamentoRepository, TipoLancamentoRepository>();
-    _builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
-    _builder.Services.AddScoped<ILancamentoRepository, LancamentoRepository>();
+    _builder.Services.AddSqlConnection(connectionString);
+    _builder.Services.AddServices();
+    _builder.Services.AddRepositories();
 }
